@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { PinContainer } from "@/components/ui/3d-pin";
 import * as THREE from "three";
+import { Html } from "@react-three/drei"; // Import Html from drei
 
 const planets = [
   {
@@ -54,21 +55,21 @@ const PlanetModel = ({ textureUrl }: { textureUrl: string }) => {
   });
 
   return (
-    <mesh ref={meshRef}>
+    <mesh ref={meshRef}> {/* Adjusted scale */}
       <sphereGeometry args={[2, 32, 32]} />
       <meshStandardMaterial map={new THREE.TextureLoader().load(textureUrl)} />
     </mesh>
   );
 };
 
-const Dwarfplanets = () => {
+const DwarfPlanets = () => {
   return (
     <div id="planets" className="w-full font-bold md:px-20 py-10 mt-10">
       <div className="max-w-7xl mx-auto mt-20">
         <h2 className="text-2xl md:text-5xl mb-2 text-white max-w-4xl ml-10">
           Dwarf Planets
         </h2>
-        <div className="flex flex-wrap justify-center gap-8 mt-20">
+        <div className="flex flex-wrap justify-center gap-8 mt-10">
           {planets.map((planet) => (
             <PinContainer
               key={planet.title}
@@ -85,13 +86,14 @@ const Dwarfplanets = () => {
                     {planet.description}
                   </p>
                 </div>
-                <div className="relative w-full h-48 mt-4 flex items-center justify-center" >
-                  <Canvas className="absolute inset-0"
-                  camera={{ position: [0, 0, 5], fov: 70 }}
-                  >
+                <div className="relative w-full h-[300px] mt-4 flex items-center justify-center">
+                  <Canvas camera={{ position: [0, 0, 5], fov: 70 }} style={{ height: '150px', width: '100%' }}>
                     <ambientLight intensity={0.7} />
                     <directionalLight position={[5, 5, 5]} />
                     <PlanetModel textureUrl={planet.textureUrl} />
+                    <Html position={[0, 0, 0]} transform>
+                      {/* Place HTML elements here if needed */}
+                    </Html>
                   </Canvas>
                 </div>
               </div>
@@ -102,4 +104,5 @@ const Dwarfplanets = () => {
     </div>
   );
 };
-export default Dwarfplanets;
+
+export default DwarfPlanets;
